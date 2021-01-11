@@ -8,18 +8,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class TanksMainClass extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Tank tank;
-	private Bullet bullet;
+	private BulletsEmitter bulletsEmitter;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		tank = new Tank(this);
-		bullet = new Bullet();
+		bulletsEmitter = new BulletsEmitter();
 
 	}
 
-	public Bullet getBullet() {
-		return bullet;
+	public BulletsEmitter getBulletsEmitter() {
+		return bulletsEmitter;
 	}
 
 	@Override
@@ -30,13 +30,13 @@ public class TanksMainClass extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		tank.render(batch);
-		if (bullet.isActive()) bullet.render(batch);
+		bulletsEmitter.render(batch);
 		batch.end();
 	}
 
 	public void update(float dt) {
 		tank.update(dt);
-		if (bullet.isActive()) bullet.update(dt);
+		bulletsEmitter.update(dt);
 	}
 
 	@Override

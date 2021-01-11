@@ -6,24 +6,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bullet {
-    private Texture texture;
     private Vector2 position;
     private Vector2 velocity;
     private boolean active;
 
     public Bullet() {
-        this.texture = new Texture("Shell.png");
         this.position = new Vector2();
         this.velocity = new Vector2();
         this.active = false;
     }
 
-    public boolean isActive() {
-        return active;
+    public Vector2 getPosition() {
+        return position;
     }
 
-    public void render(SpriteBatch batch) {
-        batch.draw(texture, position.x-8, position.y-8);
+    public boolean isActive() {
+        return active;
     }
 
     public void activate(float x, float y, float vx, float vy) {

@@ -35,7 +35,8 @@ public class Tank {
         float angleTo = Utils.getAngel(position.x, position.y, mx, my);
         turretAngle = Utils.makeRotation(turretAngle, angleTo, 180.0f, dt);
         turretAngle = Utils.angleToFromNegPiToPosPi(turretAngle);
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+
+        if (Gdx.input.justTouched()) {
             fire();
         }
     }
@@ -67,9 +68,7 @@ public class Tank {
     }
 
     public void fire() {
-        if (!game.getBullet().isActive()) {
             float angelRad = (float) Math.toRadians(turretAngle);
-            game.getBullet().activate(position.x, position.y, 320.0f * (float)Math.cos(angelRad), 320.0f * (float) Math.sin(angelRad));
-        }
+            game.getBulletsEmitter().activate(position.x, position.y, 320.0f * (float)Math.cos(angelRad), 320.0f * (float) Math.sin(angelRad));
     }
 }
