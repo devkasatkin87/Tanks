@@ -35,7 +35,7 @@ public class BulletsEmitter {
     }
 
     public void update(float dt) {
-        for (int i = 0; i < bullets.length; i++) {
+         for (int i = 0; i < bullets.length; i++) {
             if (bullets[i].isActive()) {
                 bullets[i].update(dt);
             }
