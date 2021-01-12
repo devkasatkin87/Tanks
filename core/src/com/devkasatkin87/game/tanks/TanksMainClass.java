@@ -4,19 +4,26 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.devkasatkin87.game.tanks.unit.PlayerTank;
+import com.devkasatkin87.game.tanks.unit.Tank;
 
 public class TanksMainClass extends ApplicationAdapter {
 	private SpriteBatch batch;
-	private Tank tank;
+	private PlayerTank playerTank;
 	private BulletsEmitter bulletsEmitter;
 	private Map map;
+	private BotEmitter botEmitter;
+	private float gameTimer;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		tank = new Tank(this);
+		playerTank = new PlayerTank(this);
 		bulletsEmitter = new BulletsEmitter();
 		map = new Map();
+		botEmitter = new BotEmitter(this);
+		botEmitter.activate(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()));
 
 	}
 
@@ -32,13 +39,20 @@ public class TanksMainClass extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		map.render(batch);
-		tank.render(batch);
+		playerTank.render(batch);
+		botEmitter.render(batch);
 		bulletsEmitter.render(batch);
 		batch.end();
 	}
 
 	public void update(float dt) {
-		tank.update(dt);
+		gameTimer += dt;
+		if (gameTimer > 10.0f) {
+			gameTimer = 0.0f;
+			botEmitter.activate(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()));
+		}
+		playerTank.update(dt);
+		botEmitter.update(dt);
 		bulletsEmitter.update(dt);
 	}
 

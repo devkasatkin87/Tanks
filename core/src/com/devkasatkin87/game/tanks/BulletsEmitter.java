@@ -12,9 +12,13 @@ public class BulletsEmitter {
     public BulletsEmitter() {
         this.bulletTexture = new Texture("Shell.png");
         this.bullets = new Bullet[MAX_BULLETS_COUNT];
-        for (int i = 0; i < MAX_BULLETS_COUNT; i++) {
+        for (int i = 0; i < bullets.length; i++) {
             this.bullets[i] = new Bullet();
         }
+    }
+
+    public Bullet[] getBullets() {
+        return bullets;
     }
 
     public void render(SpriteBatch batch) {
@@ -25,10 +29,10 @@ public class BulletsEmitter {
         }
     }
 
-    public void activate(float x, float y, float vx, float vy) {
+    public void activate(float x, float y, float vx, float vy, int damage) {
         for (int i = 0; i < bullets.length; i++) {
             if (!bullets[i].isActive()) {
-                bullets[i].activate(x, y, vx, vy);
+                bullets[i].activate(x, y, vx, vy, damage);
                 break;
             }
         }

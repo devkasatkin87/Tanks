@@ -21,4 +21,8 @@ public class Weapon {
     public int getDamage() {
         return damage;
     }
+
+    public Texture getTexture() {
+        return texture;
+    }
 }

@@ -1,4 +1,4 @@
-package com.devkasatkin87.game.tanks;
+package com.devkasatkin87.game.tanks.utilits;
 
 public class Utils {
     public static final float pi = 90;
