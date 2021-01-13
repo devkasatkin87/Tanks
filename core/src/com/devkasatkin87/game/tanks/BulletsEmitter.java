@@ -2,15 +2,17 @@ package com.devkasatkin87.game.tanks;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class BulletsEmitter {
-    private Texture bulletTexture;
+    private TextureRegion bulletTexture;
     private Bullet[] bullets;
 
     public static final int MAX_BULLETS_COUNT = 500;
 
-    public BulletsEmitter() {
-        this.bulletTexture = new Texture("Shell.png");
+    public BulletsEmitter(TextureAtlas atlas) {
+        this.bulletTexture = atlas.findRegion("Shell");
         this.bullets = new Bullet[MAX_BULLETS_COUNT];
         for (int i = 0; i < bullets.length; i++) {
             this.bullets[i] = new Bullet();

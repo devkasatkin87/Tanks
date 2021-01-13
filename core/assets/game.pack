@@ -1,0 +1,61 @@
+
+game.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Bot_tank_base
+  rotate: false
+  xy: 1, 23
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Bot_tank_gun
+  rotate: false
+  xy: 43, 23
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Grass
+  rotate: false
+  xy: 85, 23
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Player_tank_base
+  rotate: false
+  xy: 127, 23
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Player_tank_gun
+  rotate: false
+  xy: 169, 23
+  size: 40, 40
+  orig: 40, 40
+  offset: 0, 0
+  index: -1
+Block
+  rotate: false
+  xy: 1, 1
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+Bar
+  rotate: false
+  xy: 211, 55
+  size: 40, 8
+  orig: 40, 8
+  offset: 0, 0
+  index: -1
+Shell
+  rotate: false
+  xy: 23, 5
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

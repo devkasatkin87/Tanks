@@ -3,20 +3,23 @@ package com.devkasatkin87.game.tanks.unit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.devkasatkin87.game.tanks.TanksMainClass;
 import com.devkasatkin87.game.tanks.Weapon;
 
 public class PlayerTank extends Tank{
 
-    public PlayerTank(TanksMainClass game) {
+    public PlayerTank(TanksMainClass game, TextureAtlas atlas) {
         super(game);
         this.weapon = new Weapon();
-        this.texture = new Texture("Player_tank_base.png");
+        this.weapon.setTexture(atlas.findRegion("Player_tank_gun"));
+        this.texture = atlas.findRegion("Player_tank_base");
         this.position = new Vector2(100.0f, 100.0f);
         this.speed = 100.0f;
-        this.width = texture.getWidth();
-        this.height = texture.getHeight();
+        this.width = texture.getRegionWidth();
+        this.height = texture.getRegionHeight();
         this.hpMax = 10;
         this.hp = this.hpMax;
     }

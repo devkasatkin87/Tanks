@@ -3,6 +3,7 @@ package com.devkasatkin87.game.tanks.unit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.devkasatkin87.game.tanks.TanksMainClass;
@@ -16,14 +17,15 @@ public class BotTank extends Tank{
     private float aiTimerTo;
     private boolean isActive;
 
-    public BotTank(TanksMainClass game) {
+    public BotTank(TanksMainClass game, TextureAtlas atlas) {
         super(game);
         this.weapon = new Weapon();
-        this.texture = new Texture("Bot_tank_base.png");
+        this.weapon.setTexture(atlas.findRegion("Bot_tank_gun"));
+        this.texture = atlas.findRegion("Bot_tank_base");
         this.position = new Vector2(100.0f, 100.0f);
         this.speed = 100.0f;
-        this.width = texture.getWidth();
-        this.height = texture.getHeight();
+        this.width = texture.getRegionWidth();
+        this.height = texture.getRegionHeight();
         this.hpMax = 3;
         this.hp = this.hpMax;
         this.aiTimer = 3.0f;

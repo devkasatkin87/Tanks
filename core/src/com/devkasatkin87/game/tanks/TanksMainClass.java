@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.devkasatkin87.game.tanks.unit.PlayerTank;
 import com.devkasatkin87.game.tanks.unit.Tank;
@@ -18,11 +19,12 @@ public class TanksMainClass extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		TextureAtlas atlas = new TextureAtlas("game.pack");
 		batch = new SpriteBatch();
-		playerTank = new PlayerTank(this);
-		bulletsEmitter = new BulletsEmitter();
-		map = new Map();
-		botEmitter = new BotEmitter(this);
+		playerTank = new PlayerTank(this, atlas);
+		bulletsEmitter = new BulletsEmitter(atlas);
+		map = new Map(atlas);
+		botEmitter = new BotEmitter(this, atlas);
 		botEmitter.activate(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()));
 
 	}

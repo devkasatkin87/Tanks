@@ -2,16 +2,18 @@ package com.devkasatkin87.game.tanks;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Map {
     public static final int SIZE_X = 32;
     public static final int SIZE_Y = 18;
     public static final int CELL_SIZE = 40;
 
-    private Texture textureGrass;
+    private TextureRegion textureGrass;
 
-    public Map() {
-        this.textureGrass = new Texture("Grass.png");
+    public Map(TextureAtlas atlas) {
+        this.textureGrass = atlas.findRegion("Grass");
     }
 
     public void render(SpriteBatch batch) {
