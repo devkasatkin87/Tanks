@@ -1,6 +1,6 @@
 package com.devkasatkin87.game.tanks.unit;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +11,7 @@ import com.devkasatkin87.game.tanks.Weapon;
 public abstract class Tank {
     TanksMainClass game;
     TextureRegion texture;
+    TextureRegion textureHp;
     Weapon weapon;
     Vector2 position;
     float speed;
@@ -31,9 +32,25 @@ public abstract class Tank {
     public void render(SpriteBatch batch) {
         batch.draw(texture, position.x - width/2, position.y - height/2, width/2, height/2, width, height, 1, 1, angle);
         batch.draw(weapon.getTexture(), position.x - width/2, position.y - height/2, width/2, height/2, width, height, 1, 1, turretAngle);
+        batch.draw(textureHp, position.x - width / 2, position.y + height / 2 - 6);
+
     }
 
-    public abstract void update(float dt);
+    public void update(float dt) {
+        this.fireTimer += dt;
+        if (position.x < 0.0f) {
+            position.x = 0.0f;
+        }
+        if (position.x > Gdx.graphics.getWidth()) {
+            position.x = Gdx.graphics.getWidth();
+        }
+        if (position.y < 0.0f) {
+            position.y = 0.0f;
+        }
+        if (position.y > Gdx.graphics.getHeight()) {
+            position.y = Gdx.graphics.getHeight();
+        }
+    }
 
     public void rotateTurretToPoint(float pointX, float pointY, float dt) {
         float angleTo = Utils.getAngel(position.x, position.y, pointX, pointY);

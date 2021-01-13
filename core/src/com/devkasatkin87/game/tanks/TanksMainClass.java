@@ -16,10 +16,11 @@ public class TanksMainClass extends ApplicationAdapter {
 	private Map map;
 	private BotEmitter botEmitter;
 	private float gameTimer;
+	private TextureAtlas atlas;
 
 	@Override
 	public void create () {
-		TextureAtlas atlas = new TextureAtlas("game.pack");
+		atlas = new TextureAtlas("game.pack");
 		batch = new SpriteBatch();
 		playerTank = new PlayerTank(this, atlas);
 		bulletsEmitter = new BulletsEmitter(atlas);
@@ -61,5 +62,6 @@ public class TanksMainClass extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		atlas.dispose();
 	}
 }

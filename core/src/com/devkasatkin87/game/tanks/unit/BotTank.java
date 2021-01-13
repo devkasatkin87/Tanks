@@ -1,8 +1,5 @@
 package com.devkasatkin87.game.tanks.unit;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -22,6 +19,7 @@ public class BotTank extends Tank{
         this.weapon = new Weapon();
         this.weapon.setTexture(atlas.findRegion("Bot_tank_gun"));
         this.texture = atlas.findRegion("Bot_tank_base");
+        this.textureHp = atlas.findRegion("Bar");
         this.position = new Vector2(100.0f, 100.0f);
         this.speed = 100.0f;
         this.width = texture.getRegionWidth();
@@ -50,7 +48,6 @@ public class BotTank extends Tank{
 
     public void update(float dt) {
         this.aiTimer += dt;
-        fireTimer += dt;
         if (this.aiTimer >= this.aiTimerTo) {
             this.aiTimer = 0.0f;
             this.aiTimerTo = MathUtils.random(2.5f, 4.0f);
@@ -58,5 +55,6 @@ public class BotTank extends Tank{
             this.angle = preferredDirection.getAngle();
         }
         position.add(speed * preferredDirection.getVx() * dt, speed * preferredDirection.getVy() * dt);
+        super.update(dt);
     }
 }

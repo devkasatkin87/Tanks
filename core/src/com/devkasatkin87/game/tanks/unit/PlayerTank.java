@@ -2,9 +2,7 @@ package com.devkasatkin87.game.tanks.unit;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.devkasatkin87.game.tanks.TanksMainClass;
 import com.devkasatkin87.game.tanks.Weapon;
@@ -16,6 +14,7 @@ public class PlayerTank extends Tank{
         this.weapon = new Weapon();
         this.weapon.setTexture(atlas.findRegion("Player_tank_gun"));
         this.texture = atlas.findRegion("Player_tank_base");
+        this.textureHp = atlas.findRegion("Bar");
         this.position = new Vector2(100.0f, 100.0f);
         this.speed = 100.0f;
         this.width = texture.getRegionWidth();
@@ -51,7 +50,6 @@ public class PlayerTank extends Tank{
     }
 
     public void update(float dt) {
-        fireTimer += dt;
         checkMovement(dt);
         float mx = Gdx.input.getX();
         float my = Gdx.graphics.getHeight() - Gdx.input.getY();
@@ -61,5 +59,6 @@ public class PlayerTank extends Tank{
         if (Gdx.input.isTouched()) {
             fire(dt);
         }
+        super.update(dt);
     }
 }
