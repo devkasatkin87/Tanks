@@ -48,6 +48,7 @@ public class BotTank extends Tank{
 
     public void update(float dt) {
         this.aiTimer += dt;
+        fireTimer += dt;
         if (this.aiTimer >= this.aiTimerTo) {
             this.aiTimer = 0.0f;
             this.aiTimerTo = MathUtils.random(2.5f, 4.0f);
