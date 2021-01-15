@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
+import com.devkasatkin87.game.tanks.unit.BotTank;
 import com.devkasatkin87.game.tanks.unit.PlayerTank;
 import com.devkasatkin87.game.tanks.unit.Tank;
 
@@ -17,6 +18,8 @@ public class TanksMainClass extends ApplicationAdapter {
 	private BotEmitter botEmitter;
 	private float gameTimer;
 	private TextureAtlas atlas;
+
+	private static final boolean FRIENDLY_FIRE = false;
 
 	@Override
 	public void create () {
@@ -32,6 +35,10 @@ public class TanksMainClass extends ApplicationAdapter {
 
 	public BulletsEmitter getBulletsEmitter() {
 		return bulletsEmitter;
+	}
+
+	public PlayerTank getPlayerTank() {
+		return playerTank;
 	}
 
 	@Override
@@ -57,6 +64,37 @@ public class TanksMainClass extends ApplicationAdapter {
 		playerTank.update(dt);
 		botEmitter.update(dt);
 		bulletsEmitter.update(dt);
+		checkCollisions();
+	}
+
+	public void checkCollisions() {
+		for (int i = 0; i < bulletsEmitter.getBullets().length; i++) {
+			Bullet bullet = bulletsEmitter.getBullets()[i];
+			if (bullet.isActive()) {
+				for (int j = 0; j < botEmitter.getBots().length; j++) {
+					BotTank bot = botEmitter.getBots()[j];
+					if (bot.isActive()) {
+						if (checkBulletOwner(bot, bullet) && bot.getCircle().contains(bullet.getPosition())) {
+							bullet.deactivate();
+							bot.takeDamage(bullet.getDamage());
+							break;
+						}
+					}
+				}
+				if (checkBulletOwner(playerTank, bullet) && playerTank.getCircle().contains(bullet.getPosition())) {
+					bullet.deactivate();
+					playerTank.takeDamage(bullet.getDamage());
+				}
+			}
+		}
+	}
+
+	public boolean checkBulletOwner(Tank tank, Bullet bullet) {
+		if (!FRIENDLY_FIRE) {
+			return tank.getOwnerType() != bullet.getOwner().getOwnerType();
+		} else {
+			return tank != bullet.getOwner();
+		}
 	}
 
 	@Override

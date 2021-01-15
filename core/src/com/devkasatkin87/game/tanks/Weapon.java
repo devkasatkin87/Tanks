@@ -1,7 +1,5 @@
 package com.devkasatkin87.game.tanks;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Weapon {

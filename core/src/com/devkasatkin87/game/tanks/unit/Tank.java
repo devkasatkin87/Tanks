@@ -3,8 +3,10 @@ package com.devkasatkin87.game.tanks.unit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.devkasatkin87.game.tanks.TanksMainClass;
+import com.devkasatkin87.game.tanks.utilits.TankOwner;
 import com.devkasatkin87.game.tanks.utilits.Utils;
 import com.devkasatkin87.game.tanks.Weapon;
 
@@ -18,6 +20,8 @@ public abstract class Tank {
     float angle;
     float turretAngle;
     float fireTimer;
+    Circle circle;
+    TankOwner ownerType;
 
     int width;
     int height;
@@ -29,11 +33,30 @@ public abstract class Tank {
         this.game = game;
     }
 
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public TankOwner getOwnerType() {
+        return ownerType;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
     public void render(SpriteBatch batch) {
         batch.draw(texture, position.x - width/2, position.y - height/2, width/2, height/2, width, height, 1, 1, angle);
         batch.draw(weapon.getTexture(), position.x - width/2, position.y - height/2, width/2, height/2, width, height, 1, 1, turretAngle);
-        batch.draw(textureHp, position.x - width / 2, position.y + height / 2 - 6);
 
+        if (hp < hpMax) {
+            batch.setColor(0,0,0,0.8f);
+            batch.draw(textureHp, position.x - width / 2, position.y + height / 2 - 6, 44, 12);
+            batch.setColor(0,1,0,0.8f);
+            batch.draw(textureHp, position.x - width / 2, position.y + height / 2 - 4, ((float) hp / hpMax) * 40, 8);
+            batch.setColor(1,1,1,1);
+
+        }
     }
 
     public void update(float dt) {
@@ -50,6 +73,7 @@ public abstract class Tank {
         if (position.y > Gdx.graphics.getHeight()) {
             position.y = Gdx.graphics.getHeight();
         }
+        circle.setPosition(position);
     }
 
     public void rotateTurretToPoint(float pointX, float pointY, float dt) {
@@ -62,7 +86,16 @@ public abstract class Tank {
         if (fireTimer >= weapon.getFirePeriod()) {
             fireTimer = 0.0f;
             float angelRad = (float) Math.toRadians(turretAngle);
-            game.getBulletsEmitter().activate(position.x, position.y, 320.0f * (float)Math.cos(angelRad), 320.0f * (float) Math.sin(angelRad), weapon.getDamage());
+            game.getBulletsEmitter().activate(this, position.x, position.y, 320.0f * (float)Math.cos(angelRad), 320.0f * (float) Math.sin(angelRad), weapon.getDamage());
         }
     }
+
+    public void takeDamage(int damage) {
+        hp -= 1;
+        if (hp <= 0) {
+            destroy();
+        }
+    }
+
+    public abstract void destroy();
 }

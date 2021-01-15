@@ -1,11 +1,14 @@
 package com.devkasatkin87.game.tanks.unit;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.devkasatkin87.game.tanks.TanksMainClass;
 import com.devkasatkin87.game.tanks.Weapon;
 import com.devkasatkin87.game.tanks.utilits.Direction;
+import com.devkasatkin87.game.tanks.utilits.TankOwner;
 
 public class BotTank extends Tank{
 
@@ -13,9 +16,11 @@ public class BotTank extends Tank{
     private float aiTimer;
     private float aiTimerTo;
     private boolean isActive;
+    private float pursuitRadius;
 
     public BotTank(TanksMainClass game, TextureAtlas atlas) {
         super(game);
+        this.ownerType = TankOwner.AI;
         this.weapon = new Weapon();
         this.weapon.setTexture(atlas.findRegion("Bot_tank_gun"));
         this.texture = atlas.findRegion("Bot_tank_base");
@@ -29,6 +34,8 @@ public class BotTank extends Tank{
         this.aiTimer = 3.0f;
         this.preferredDirection = Direction.UP;
         this.isActive = false;
+        this.pursuitRadius = 300.f;
+        this.circle = new Circle(position.x, position.y, (width + height) /2);
     }
 
     public void activate(float x, float y) {
@@ -55,6 +62,16 @@ public class BotTank extends Tank{
             this.angle = preferredDirection.getAngle();
         }
         position.add(speed * preferredDirection.getVx() * dt, speed * preferredDirection.getVy() * dt);
+        float dst = this.position.dst(game.getPlayerTank().getPosition());
+        if (dst < pursuitRadius) {
+            rotateTurretToPoint(game.getPlayerTank().getPosition().x, game.getPlayerTank().getPosition().y, dt);
+            fire(dt);
+        }
         super.update(dt);
+    }
+
+    @Override
+    public void destroy() {
+        this.isActive = false;
     }
 }
