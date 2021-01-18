@@ -85,6 +85,8 @@ public class TanksMainClass extends ApplicationAdapter {
 					bullet.deactivate();
 					playerTank.takeDamage(bullet.getDamage());
 				}
+
+				map.checkWallAndBulletsCollision(bullet);
 			}
 		}
 	}

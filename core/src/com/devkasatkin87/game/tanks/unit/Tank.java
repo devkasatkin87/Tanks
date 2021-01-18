@@ -86,7 +86,7 @@ public abstract class Tank {
         if (fireTimer >= weapon.getFirePeriod()) {
             fireTimer = 0.0f;
             float angelRad = (float) Math.toRadians(turretAngle);
-            game.getBulletsEmitter().activate(this, position.x, position.y, 320.0f * (float)Math.cos(angelRad), 320.0f * (float) Math.sin(angelRad), weapon.getDamage());
+            game.getBulletsEmitter().activate(this, position.x, position.y, weapon.getProjectileSpeed() * (float)Math.cos(angelRad), weapon.getProjectileSpeed() * (float) Math.sin(angelRad), weapon.getDamage(), weapon.getProjectileLifeTime());
         }
     }
 
