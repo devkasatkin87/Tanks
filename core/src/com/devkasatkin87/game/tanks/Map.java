@@ -18,9 +18,17 @@ public class Map {
         this.textureGrass = atlas.findRegion("Grass");
         this.textureBlock = atlas.findRegion("Block");
         this.obstacles = new int[SIZE_X][SIZE_Y];
+        createMap();
+    }
+
+    private void createMap() {
         for (int i = 0; i < SIZE_X; i++) {
-            for (int j = 0; j < 3; j++) {
-                this.obstacles[i][SIZE_Y - 1 - j] = 5;
+            for (int j = 0; j < SIZE_Y; j++) {
+                int cx = (int)(i / 4);
+                int cy = (int)(j / 4);
+                if (cx % 2 == 0 && cy % 2 == 0) {
+                    obstacles[i][j] = 5;
+                }
             }
         }
     }
@@ -35,6 +43,40 @@ public class Map {
                 bullet.deactivate();
             }
         }
+    }
+
+    public boolean isAreaClear(float x, float y, float halfSize) {
+        int leftX = (int) ((x - halfSize) / CELL_SIZE);
+        int rightX = (int) ((x + halfSize) / CELL_SIZE);
+
+        int bottomY = (int) ((y - halfSize) / CELL_SIZE);
+        int topY = (int) ((y + halfSize) / CELL_SIZE);
+
+        if (leftX < 0) {
+            leftX = 0;
+        }
+
+        if (rightX >= SIZE_X) {
+            rightX = SIZE_X - 1;
+        }
+
+        if (bottomY < 0) {
+            bottomY = 0;
+        }
+
+        if (topY >= SIZE_Y) {
+            topY = SIZE_Y - 1;
+        }
+
+        for (int i = leftX; i <= rightX; i++) {
+            for (int j = bottomY; j <= topY ; j++) {
+                if (obstacles[i][j] > 0) {
+                    return false;
+                }
+            }
+        }
+
+          return true;
     }
 
     public void render(SpriteBatch batch) {
