@@ -3,6 +3,7 @@ package com.devkasatkin87.game.tanks;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,6 +13,7 @@ import com.devkasatkin87.game.tanks.unit.Tank;
 
 public class TanksMainClass extends ApplicationAdapter {
 	private SpriteBatch batch;
+	private BitmapFont font24;
 	private PlayerTank playerTank;
 	private BulletsEmitter bulletsEmitter;
 	private Map map;
@@ -19,11 +21,13 @@ public class TanksMainClass extends ApplicationAdapter {
 	private float gameTimer;
 	private TextureAtlas atlas;
 
+
 	private static final boolean FRIENDLY_FIRE = false;
 
 	@Override
 	public void create () {
 		atlas = new TextureAtlas("game.pack");
+		font24 = new BitmapFont(Gdx.files.internal("font24.fnt"));
 		batch = new SpriteBatch();
 		playerTank = new PlayerTank(this, atlas);
 		bulletsEmitter = new BulletsEmitter(atlas);
@@ -57,6 +61,7 @@ public class TanksMainClass extends ApplicationAdapter {
 		playerTank.render(batch);
 		botEmitter.render(batch);
 		bulletsEmitter.render(batch);
+		playerTank.humanHUD(batch, font24);
 		batch.end();
 	}
 
