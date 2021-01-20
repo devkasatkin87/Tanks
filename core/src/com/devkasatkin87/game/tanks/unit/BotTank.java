@@ -86,5 +86,6 @@ public class BotTank extends Tank{
     @Override
     public void destroy() {
         this.isActive = false;
+
     }
 }

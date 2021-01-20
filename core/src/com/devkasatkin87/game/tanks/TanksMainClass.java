@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -43,6 +44,7 @@ public class TanksMainClass extends ApplicationAdapter {
 		botEmitter = new BotEmitter(this, atlas);
 		botEmitter.activate(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()));
 		gameTimer = 6.0f;
+
 		stage = new Stage();
 		Skin skin = new Skin();
 		skin.add("simpleButton", new TextureRegion(atlas.findRegion("SimpleButton")));
@@ -50,15 +52,27 @@ public class TanksMainClass extends ApplicationAdapter {
 		textButtonStyle.up = skin.getDrawable("simpleButton");
 		textButtonStyle.font = font24;
 
-		TextButton pauseButton = new TextButton("Pause", textButtonStyle);
-		pauseButton.addListener(new ClickListener(){
+		Group group = new Group();
+		final TextButton pauseButton = new TextButton("Pause", textButtonStyle);
+		final TextButton exitButton = new TextButton("Exit", textButtonStyle);
+		exitButton.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
+			}
+		});
+		pauseButton.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				paused = !paused;
 			}
 		});
-		pauseButton.setPosition(800, 680);
-		stage.addActor(pauseButton);
+		pauseButton.setPosition(0, 40);
+		exitButton.setPosition(0, 0);
+		group.addActor(pauseButton);
+		group.addActor(exitButton);
+		group.setPosition(1140, 640);
+		stage.addActor(group);
 		Gdx.input.setInputProcessor(stage);
 
 	}
