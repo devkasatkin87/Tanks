@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.devkasatkin87.game.tanks.GameScreen;
 import com.devkasatkin87.game.tanks.TanksMainClass;
 import com.devkasatkin87.game.tanks.Weapon;
 import com.devkasatkin87.game.tanks.utilits.Direction;
@@ -16,7 +17,7 @@ public class PlayerTank extends Tank{
     private int lifes;
     private int score;
 
-    public PlayerTank(TanksMainClass game, TextureAtlas atlas) {
+    public PlayerTank(GameScreen game, TextureAtlas atlas) {
         super(game);
         this.ownerType = TankOwner.PLAYER;
         this.weapon = new Weapon();

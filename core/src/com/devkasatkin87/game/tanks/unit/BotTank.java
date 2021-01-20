@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.devkasatkin87.game.tanks.GameScreen;
 import com.devkasatkin87.game.tanks.TanksMainClass;
 import com.devkasatkin87.game.tanks.Weapon;
 import com.devkasatkin87.game.tanks.utilits.Direction;
@@ -19,7 +20,7 @@ public class BotTank extends Tank{
     private float pursuitRadius;
     private Vector3 lastPosition;
 
-    public BotTank(TanksMainClass game, TextureAtlas atlas) {
+    public BotTank(GameScreen game, TextureAtlas atlas) {
         super(game);
         this.ownerType = TankOwner.AI;
         this.weapon = new Weapon();

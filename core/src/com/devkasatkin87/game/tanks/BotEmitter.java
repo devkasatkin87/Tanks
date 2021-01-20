@@ -10,7 +10,7 @@ public class BotEmitter {
 
     public static final int MAX_BOTS_COUNT = 200;
 
-    public BotEmitter(TanksMainClass game, TextureAtlas atlas) {
+    public BotEmitter(GameScreen game, TextureAtlas atlas) {
         this.bots = new BotTank[MAX_BOTS_COUNT];
         for (int i = 0; i < bots.length; i++) {
             this.bots[i] = new BotTank(game, atlas);

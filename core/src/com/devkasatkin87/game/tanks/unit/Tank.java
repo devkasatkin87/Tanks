@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.devkasatkin87.game.tanks.GameScreen;
 import com.devkasatkin87.game.tanks.TanksMainClass;
 import com.devkasatkin87.game.tanks.utilits.Direction;
 import com.devkasatkin87.game.tanks.utilits.TankOwner;
@@ -12,7 +13,7 @@ import com.devkasatkin87.game.tanks.utilits.Utils;
 import com.devkasatkin87.game.tanks.Weapon;
 
 public abstract class Tank {
-    TanksMainClass game;
+    GameScreen game;
     TextureRegion texture;
     TextureRegion textureHp;
     Weapon weapon;
@@ -31,7 +32,7 @@ public abstract class Tank {
     int hp;
     int hpMax;
 
-    public Tank(TanksMainClass game) {
+    public Tank(GameScreen game) {
         this.game = game;
         this.tmp = new Vector2(0.0f,0.0f);
     }
