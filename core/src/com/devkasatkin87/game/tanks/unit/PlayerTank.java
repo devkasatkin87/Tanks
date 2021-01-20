@@ -78,6 +78,7 @@ public class PlayerTank extends Tank{
     }
 
     public void humanHUD(SpriteBatch batch, BitmapFont font24) {
-        font24.draw(batch, "Score: " + score, 20,700);
+
+        font24.draw(batch, "Score: " + score + "\nLifes: " + lifes, 20,700);
     }
 }

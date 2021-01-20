@@ -6,7 +6,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.devkasatkin87.game.tanks.unit.BotTank;
 import com.devkasatkin87.game.tanks.unit.PlayerTank;
 import com.devkasatkin87.game.tanks.unit.Tank;
@@ -20,6 +26,8 @@ public class TanksMainClass extends ApplicationAdapter {
 	private BotEmitter botEmitter;
 	private float gameTimer;
 	private TextureAtlas atlas;
+	private Stage stage;
+	private boolean paused;
 
 
 	private static final boolean FRIENDLY_FIRE = false;
@@ -35,6 +43,23 @@ public class TanksMainClass extends ApplicationAdapter {
 		botEmitter = new BotEmitter(this, atlas);
 		botEmitter.activate(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()));
 		gameTimer = 6.0f;
+		stage = new Stage();
+		Skin skin = new Skin();
+		skin.add("simpleButton", new TextureRegion(atlas.findRegion("SimpleButton")));
+		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+		textButtonStyle.up = skin.getDrawable("simpleButton");
+		textButtonStyle.font = font24;
+
+		TextButton pauseButton = new TextButton("Pause", textButtonStyle);
+		pauseButton.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				paused = !paused;
+			}
+		});
+		pauseButton.setPosition(800, 680);
+		stage.addActor(pauseButton);
+		Gdx.input.setInputProcessor(stage);
 
 	}
 
@@ -62,29 +87,34 @@ public class TanksMainClass extends ApplicationAdapter {
 		botEmitter.render(batch);
 		bulletsEmitter.render(batch);
 		playerTank.humanHUD(batch, font24);
+		stage.draw();
 		batch.end();
 	}
 
 	public void update(float dt) {
-		gameTimer += dt;
-		if (gameTimer > 10.0f) {
-			gameTimer = 0.0f;
+		if (!paused) {
+			gameTimer += dt;
+			if (gameTimer > 10.0f) {
+				gameTimer = 0.0f;
 
-			float coordX, coordY;
+				float coordX, coordY;
 
-			do {
-				coordX = MathUtils.random(0, Gdx.graphics.getWidth());
-				coordY = MathUtils.random(0, Gdx.graphics.getHeight());
+				do {
+					coordX = MathUtils.random(0, Gdx.graphics.getWidth());
+					coordY = MathUtils.random(0, Gdx.graphics.getHeight());
 
-			} while (!map.isAreaClear(coordX, coordY, 20));
+				} while (!map.isAreaClear(coordX, coordY, 20));
 
 
-			botEmitter.activate(coordX, coordY);
+				botEmitter.activate(coordX, coordY);
+			}
+			playerTank.update(dt);
+			botEmitter.update(dt);
+			bulletsEmitter.update(dt);
+			checkCollisions();
+
 		}
-		playerTank.update(dt);
-		botEmitter.update(dt);
-		bulletsEmitter.update(dt);
-		checkCollisions();
+		stage.act(dt);
 	}
 
 	public void checkCollisions() {
