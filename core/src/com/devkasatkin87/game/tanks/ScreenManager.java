@@ -28,6 +28,14 @@ public class ScreenManager {
     private Viewport viewport;
     private Camera camera;
 
+    public Viewport getViewport() {
+        return viewport;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+
     public void init(Game game, SpriteBatch batch) {
         this.game = game;
         this.camera = new OrthographicCamera(WORLD_WIDTH, WORLD_HEIGHT);

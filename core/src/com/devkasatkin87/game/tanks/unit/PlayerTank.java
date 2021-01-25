@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.devkasatkin87.game.tanks.GameScreen;
+import com.devkasatkin87.game.tanks.ScreenManager;
 import com.devkasatkin87.game.tanks.TanksMainClass;
 import com.devkasatkin87.game.tanks.Weapon;
 import com.devkasatkin87.game.tanks.utilits.Direction;
@@ -61,10 +62,12 @@ public class PlayerTank extends Tank{
 
     public void update(float dt) {
         checkMovement(dt);
-        float mx = Gdx.input.getX();
-        float my = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-        rotateTurretToPoint(mx, my, dt);
+        tmp.set(Gdx.input.getX(), Gdx.input.getY());
+
+        ScreenManager.getInstance().getViewport().unproject(tmp);
+
+        rotateTurretToPoint(tmp.x, tmp.y, dt);
 
         if (Gdx.input.isTouched()) {
             fire();
