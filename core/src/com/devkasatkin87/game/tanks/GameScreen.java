@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,9 +27,12 @@ public class GameScreen implements Screen {
     private Map map;
     private BotEmitter botEmitter;
     private float gameTimer;
+    private float worldTimer;
     private TextureAtlas atlas;
     private Stage stage;
     private boolean paused;
+    private Vector2 mousePosition;
+    private TextureRegion cursor;
 
     private static final boolean FRIENDLY_FIRE = false;
 
@@ -49,10 +53,15 @@ public class GameScreen implements Screen {
         this.batch = batch;
     }
 
+    public Vector2 getMousePosition() {
+        return mousePosition;
+    }
+
     @Override
     public void show() {
         atlas = new TextureAtlas("game.pack");
         font24 = new BitmapFont(Gdx.files.internal("font24.fnt"));
+        cursor = new TextureRegion(atlas.findRegion("cursor"));
         playerTank = new PlayerTank(this, atlas);
         bulletsEmitter = new BulletsEmitter(atlas);
         map = new Map(atlas);
@@ -61,6 +70,7 @@ public class GameScreen implements Screen {
         gameTimer = 6.0f;
 
         stage = new Stage();
+        mousePosition = new Vector2();
         Skin skin = new Skin();
         skin.add("simpleButton", new TextureRegion(atlas.findRegion("SimpleButton")));
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
@@ -89,6 +99,7 @@ public class GameScreen implements Screen {
         group.setPosition(1140, 640);
         stage.addActor(group);
         Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCursorCatched(true);
     }
 
     @Override
@@ -109,6 +120,7 @@ public class GameScreen implements Screen {
         bulletsEmitter.render(batch);
         playerTank.humanHUD(batch, font24);
         stage.draw();
+        batch.draw(cursor, mousePosition.x - cursor.getRegionWidth() / 2, mousePosition.y - cursor.getRegionHeight() / 2, cursor.getRegionWidth() / 2, cursor.getRegionHeight() / 2, cursor.getRegionWidth(), cursor.getRegionHeight(), 1, 1, -worldTimer * 25);
         batch.end();
     }
 
@@ -138,8 +150,11 @@ public class GameScreen implements Screen {
     }
 
     public void update(float dt) {
+        mousePosition.set(Gdx.input.getX(), Gdx.input.getY());
+        ScreenManager.getInstance().getViewport().unproject(mousePosition);
         if (!paused) {
             gameTimer += dt;
+            worldTimer += dt;
             if (gameTimer > 10.0f) {
                 gameTimer = 0.0f;
 
