@@ -1,6 +1,7 @@
 package com.devkasatkin87.game.tanks;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,6 +26,7 @@ public class ScreenManager {
 
     private Game game;
     private GameScreen gameScreen;
+    private MenuScreen menuScreen;
     private Viewport viewport;
     private Camera camera;
 
@@ -43,6 +45,7 @@ public class ScreenManager {
         this.camera.update();
         this.viewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         this.gameScreen = new GameScreen(batch);
+        this.menuScreen = new MenuScreen(batch);
     }
 
     public void resize(int width, int height) {
@@ -51,10 +54,14 @@ public class ScreenManager {
     }
 
     public void setScreen(ScreenType screenType) {
+        Gdx.input.setCursorCatched(false);
         Screen currentScreen = game.getScreen();
         switch (screenType) {
             case GAME:
                 game.setScreen(gameScreen);
+                break;
+            case MENU:
+                game.setScreen(menuScreen);
                 break;
         }
         if (currentScreen != null) {

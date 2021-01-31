@@ -1,7 +1,8 @@
 package com.devkasatkin87.game.tanks;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,11 +20,12 @@ import com.devkasatkin87.game.tanks.unit.BotTank;
 import com.devkasatkin87.game.tanks.unit.PlayerTank;
 import com.devkasatkin87.game.tanks.unit.Tank;
 
-public class GameScreen implements Screen {
+public class GameScreen extends AbstractScreen {
     private SpriteBatch batch;
     private BitmapFont font24;
     private PlayerTank playerTank;
     private BulletsEmitter bulletsEmitter;
+    private ItemEmitter itemEmitter;
     private Map map;
     private BotEmitter botEmitter;
     private float gameTimer;
@@ -33,6 +35,9 @@ public class GameScreen implements Screen {
     private boolean paused;
     private Vector2 mousePosition;
     private TextureRegion cursor;
+
+    private Sound sound;
+    private Music music;
 
     private static final boolean FRIENDLY_FIRE = false;
 
@@ -57,13 +62,27 @@ public class GameScreen implements Screen {
         return mousePosition;
     }
 
+    public ItemEmitter getItemEmitter() {
+        return itemEmitter;
+    }
+
     @Override
     public void show() {
+
+        //Пример инициализации и запуска музыки и звуков (из папки asssets)
+//        sound = Gdx.audio.newSound(Gdx.files.internal("boom.wav"));
+//        sound.play();
+//
+//        music = Gdx.audio.newMusic(Gdx.files.internal("song.mp3"));
+//        music.isLooping();
+//        music.play();
+
         atlas = new TextureAtlas("game.pack");
         font24 = new BitmapFont(Gdx.files.internal("font24.fnt"));
         cursor = new TextureRegion(atlas.findRegion("cursor"));
         playerTank = new PlayerTank(this, atlas);
         bulletsEmitter = new BulletsEmitter(atlas);
+        itemEmitter = new ItemEmitter(atlas);
         map = new Map(atlas);
         botEmitter = new BotEmitter(this, atlas);
         botEmitter.activate(MathUtils.random(0, Gdx.graphics.getWidth()), MathUtils.random(0, Gdx.graphics.getHeight()));
@@ -83,7 +102,7 @@ public class GameScreen implements Screen {
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                ScreenManager.getInstance().setScreen(ScreenManager.ScreenType.MENU);
             }
         });
         pauseButton.addListener(new ClickListener() {
@@ -118,6 +137,7 @@ public class GameScreen implements Screen {
         playerTank.render(batch);
         botEmitter.render(batch);
         bulletsEmitter.render(batch);
+        itemEmitter.render(batch);
         playerTank.humanHUD(batch, font24);
         stage.draw();
         batch.draw(cursor, mousePosition.x - cursor.getRegionWidth() / 2, mousePosition.y - cursor.getRegionHeight() / 2, cursor.getRegionWidth() / 2, cursor.getRegionHeight() / 2, cursor.getRegionWidth(), cursor.getRegionHeight(), 1, 1, -worldTimer * 25);
@@ -125,27 +145,8 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
-        ScreenManager.getInstance().resize(width, height);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
     public void dispose() {
+        font24.dispose();
         atlas.dispose();
     }
 
@@ -172,6 +173,7 @@ public class GameScreen implements Screen {
             playerTank.update(dt);
             botEmitter.update(dt);
             bulletsEmitter.update(dt);
+            itemEmitter.update(dt);
             checkCollisions();
 
         }
@@ -198,6 +200,17 @@ public class GameScreen implements Screen {
                 }
 
                 map.checkWallAndBulletsCollision(bullet);
+            }
+        }
+
+        for (int i = 0; i < itemEmitter.getItems().length; i++) {
+            if (itemEmitter.getItems()[i].isActive()) {
+                Item item = itemEmitter.getItems()[i];
+                if (playerTank.getCircle().contains(item.getPosition())) {
+                    playerTank.consumePowerUp(item);
+                    item.deactivate();
+                    break;
+                }
             }
         }
     }

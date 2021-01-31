@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
-import com.devkasatkin87.game.tanks.GameScreen;
-import com.devkasatkin87.game.tanks.ScreenManager;
-import com.devkasatkin87.game.tanks.TanksMainClass;
-import com.devkasatkin87.game.tanks.Weapon;
+import com.devkasatkin87.game.tanks.*;
 import com.devkasatkin87.game.tanks.utilits.Direction;
 import com.devkasatkin87.game.tanks.utilits.TankOwner;
 
@@ -80,5 +77,18 @@ public class PlayerTank extends Tank{
     public void humanHUD(SpriteBatch batch, BitmapFont font24) {
 
         font24.draw(batch, "Score: " + score + "\nLifes: " + lifes, 20,700);
+    }
+
+    public void consumePowerUp(Item item) {
+        switch (item.getType()) {
+            case MEDKIT:
+                hp += 4;
+                if (hp > hpMax) hp = hpMax;
+                break;
+
+            case SHIELD:
+                addScore(1000);
+                break;
+        }
     }
 }
